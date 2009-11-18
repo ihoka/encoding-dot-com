@@ -23,9 +23,13 @@ module EncodingDotCom
     def make_request(xml)
       response = @http.post(ENDPOINT, :xml => xml)
       raise AvailabilityError.new unless response.code.to_s == "200"
-      errors = Nokogiri::XML(response.to_s).xpath("/response/errors/error").map {|e| e.text }
-      raise MessageError.new(errors.join(", ")) unless errors.empty?
+      check_for_response_errors(response.to_s)
       true
+    end
+
+    def check_for_response_errors(xml)
+      errors = Nokogiri::XML(xml).xpath("/response/errors/error").map {|e| e.text }
+      raise MessageError.new(errors.join(", ")) unless errors.empty?
     end
   end
 end
