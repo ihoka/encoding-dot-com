@@ -9,9 +9,14 @@ module EncodingDotCom
     
     def initialize(attributes={})
       @output = attributes["output"]
-      @width = attributes["width"] || 0
-      @height = attributes["height"] || 0
       raise IllegalFormatAttribute.new unless ALLOWED_OUTPUT_FORMATS.include?(@output)
+
+      (class << self; self; end).send :include, EncodingDotCom.const_get("AttributeRestrictions" + @output.capitalize)
+
+      @width = attributes["width"] || default_width
+      @height = attributes["height"] || default_height
+
+      raise IllegalFormatAttribute.new unless valid_attributes?
     end
 
     def size
@@ -29,6 +34,22 @@ module EncodingDotCom
 
     private
 
+    def valid_attributes?
+      valid_size?
+    end
+
+    def valid_size?
+      true
+    end
+    
+    def default_width
+      0
+    end
+
+    def default_height
+      0
+    end
+    
     def size_specified?
       @height != 0 || @width != 0
     end
