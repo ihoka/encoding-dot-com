@@ -35,9 +35,17 @@ describe "Encoding.com Facade" do
       @facade.process(stub("source"), stub("destination"), stub("format")).should be_true
     end
 
-    it "should raise an AvailabilityError if response from encoding.com is a 5xx" do
-      pending
-      lambda { @http.should_receive(:post).and_return(stub("Http Response", :code => 503)) }.should raise_error(EncodingDotCom::AvailabilityError)
+    it "should raise an AvailabilityError if response status from encoding.com is not a 200" do
+      @http.should_receive(:post).and_return(stub("Http Response", :code => 503))
+      lambda { @facade.process(stub("source"), stub("destination"), stub("format")) }.should raise_error(EncodingDotCom::AvailabilityError)
+    end
+
+    it "should raise an MessageError if response contains errors" do
+      response = stub("Http Response",
+                      :code => 200,
+                      :to_s => "<?xml version=\"1.0\"?>\n<response><errors><error>Wrong query format</error></errors></response>\n")
+      @http.should_receive(:post).and_return(response)
+      lambda { @facade.process(stub("source"), stub("destination"), stub("format")) }.should raise_error(EncodingDotCom::MessageError)
     end
   end
   

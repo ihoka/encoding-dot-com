@@ -1,5 +1,10 @@
+require 'nokogiri'
+
 module EncodingDotCom
   class AvailabilityError < StandardError
+  end
+
+  class MessageError < StandardError
   end
   
   class Facade
@@ -17,8 +22,10 @@ module EncodingDotCom
 
     def make_request(xml)
       response = @http.post(ENDPOINT, :xml => xml)
-      return true if response.code.to_s == "200"
-      raise AvailabilityError.new if response.code.to_s[0..0] == "5"
+      raise AvailabilityError.new unless response.code.to_s == "200"
+      errors = Nokogiri::XML(response.to_s).xpath("/response/errors/error").map {|e| e.text }
+      raise MessageError.new(errors.join(", ")) unless errors.empty?
+      true
     end
   end
 end
