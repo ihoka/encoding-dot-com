@@ -27,8 +27,17 @@ module EncodingDotCom
       @user_id, @user_key, @http = user_id, user_key, http
     end
 
-    def process(source, destination, format)
-      make_request("<query><userid>#{@user_id}</userid><userkey>#{@user_key}</userkey><action>AddMedia</action><source>#{source}</source></query>")
+    def add_and_process(source, destination, formats)
+      query = Nokogiri::XML::Builder.new do |q|
+        q.query {
+          q.userid @user_id
+          q.userkey @user_key
+          q.action "AddMedia"
+          q.source source
+          formats.each {|format| format.build_xml(q) }
+        }
+      end
+      make_request(query.to_xml)
     end
 
     private
