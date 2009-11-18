@@ -32,17 +32,17 @@ describe "Encoding.com Format" do
     end
 
     describe "size restrictions" do
-      it "can have a size of 320x120 or 320x180 if the output format is zune" do
+      it "should have a sizes of 320x120 or 320x180 if the output format is zune" do
         lambda { EncodingDotCom::Format.new("output" => "zune", "size" => "400x400") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
         lambda { EncodingDotCom::Format.new("output" => "zune", "size" => "320x120") }.should_not raise_error        
         lambda { EncodingDotCom::Format.new("output" => "zune", "size" => "320x180") }.should_not raise_error
       end
       
-      it "can only have sizes 320x240 or 640x480 if the output is ipod" do
+      it "should have sizes 320x240 or 640x480 if the output format is ipod" do
         lambda { EncodingDotCom::Format.new("output" => "ipod", "size" => "400x400") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
       end
 
-      it "can have widths and heights in multiples of 16 if the output is vp6" do
+      it "should have widths and heights in multiples of 16 if the output format is vp6" do
         lambda { EncodingDotCom::Format.new("output" => "vp6", "size" => "32x32") }.should_not raise_error
         lambda { EncodingDotCom::Format.new("output" => "vp6", "size" => "33x33") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
       end

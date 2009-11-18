@@ -1,7 +1,4 @@
 module EncodingDotCom
-  class IllegalFormatAttribute < StandardError
-  end
-
   class Format
     ALLOWED_OUTPUT_FORMATS = %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma thumbnail}.freeze
 

@@ -1,16 +1,6 @@
 require 'nokogiri'
 
 module EncodingDotCom
-  # Error raised if there is an http-level problem accessing the
-  # encoding.com API.
-  class AvailabilityError < StandardError
-  end
-
-  # Error raiseed if there is an problem with the message sent to
-  # encoding.com API.
-  class MessageError < StandardError
-  end
-
   # A remote facade to the encoding.com API.
   #
   # The facade is stateless and can be reused for multiple requests.

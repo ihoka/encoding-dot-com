@@ -59,5 +59,11 @@ describe "Encoding.com Facade" do
       expect_xml_with_xpath("/query/source[text()='http://example.com/']")
       @facade.add_and_process("http://example.com/", stub("destination"), [])
     end
+
+    it "should include the formats provided" do
+      expect_xml_with_xpath("/query/format/output[text()='flv']")
+      format = EncodingDotCom::Format.new("output" => "flv")
+      @facade.add_and_process(stub("source"), stub("destination"), [format])
+    end
   end
 end
