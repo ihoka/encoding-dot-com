@@ -17,6 +17,31 @@ class EncodingXpathMatcher
   end
 end
 
+module XpathMatchers
+  class HaveXpath
+    def initialize(xpath)
+      @xpath = xpath
+    end
+
+    def matches?(xml)
+      @xml = xml
+      Nokogiri::XML(xml).xpath(@xpath).any?
+    end
+
+    def failure_message
+      "expected #{@xml} to have xpath #{@xpath}"
+    end
+
+    def negative_failure_message
+      "expected #{@xml} not to have xpath #{@xpath}"
+    end
+  end
+
+  def have_xpath(xpath)
+    HaveXpath.new(xpath)
+  end
+end
+
 Spec::Runner.configure do |config|
-  
+  config.include(XpathMatchers)
 end
