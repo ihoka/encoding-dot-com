@@ -77,5 +77,12 @@ describe "Encoding.com Format" do
         format.build_xml(b)
       end.to_xml.should have_xpath("/format/size[text()='0x480']")
     end
+
+    it "should create a logo node for logo attributes" do
+      format = EncodingDotCom::Format.new("output" => "flv", "logo_x" => 30)
+      Nokogiri::XML::Builder.new do |b|
+        format.build_xml(b)
+      end.to_xml.should have_xpath("/format/logo/logo_x[text()='30']")
+    end
   end
 end
