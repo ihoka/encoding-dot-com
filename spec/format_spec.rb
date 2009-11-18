@@ -16,23 +16,15 @@ describe "Encoding.com Format" do
     end
 
     it "should allow flv, fl9, wmv, 3gp, mp4, m4v, ipod, iphone, appletv, psp, zune, mp3, wma and thumbnail output formats" do
-      %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune mp3 wma thumbnail}.each do |format|
+      %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma thumbnail}.each do |format|
         lambda { EncodingDotCom::Format.new("output" => format) }.should_not raise_error
       end
     end
   end
 
   describe "specifying the size of the output video" do
-    it "should be specifiable with a width only" do
-      EncodingDotCom::Format.new("output" => "flv", "width" => 640).size.should == "640x0"
-    end
-
-    it "should be specifiable with a height only" do
-      EncodingDotCom::Format.new("output" => "flv", "height" => 480).size.should == "0x480"
-    end
-
-    it "should be specifiable both by width and height" do
-      EncodingDotCom::Format.new("output" => "flv", "width" => 640, "height" => 480).size.should == "640x480"
+    it "should have a size attribute" do
+      EncodingDotCom::Format.new("output" => "flv", "size" => "640x480").size.should == "640x480"
     end
 
     it "should be nil if neither width nor height are specified" do
@@ -40,19 +32,19 @@ describe "Encoding.com Format" do
     end
 
     describe "size restrictions" do
-      it "can only have a width of 320 if the output format is zune" do
-        lambda { EncodingDotCom::Format.new("output" => "zune", "width" => 400) }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
-        lambda { EncodingDotCom::Format.new("output" => "zune", "width" => 320) }.should_not raise_error
+      it "can have a size of 320x120 or 320x180 if the output format is zune" do
+        lambda { EncodingDotCom::Format.new("output" => "zune", "size" => "400x400") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+        lambda { EncodingDotCom::Format.new("output" => "zune", "size" => "320x120") }.should_not raise_error        
+        lambda { EncodingDotCom::Format.new("output" => "zune", "size" => "320x180") }.should_not raise_error
       end
-
-      it "can only have a height of 120 or 180 if the output format is zune" do
-        lambda { EncodingDotCom::Format.new("output" => "zune", "height" => 400) }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
-        lambda { EncodingDotCom::Format.new("output" => "zune", "height" => 180) }.should_not raise_error
-        lambda { EncodingDotCom::Format.new("output" => "zune", "height" => 120) }.should_not raise_error        
-      end
-
+      
       it "can only have sizes 320x240 or 640x480 if the output is ipod" do
-        lambda { EncodingDotCom::Format.new("output" => "ipod", "height" => 400) }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+        lambda { EncodingDotCom::Format.new("output" => "ipod", "size" => "400x400") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+      end
+
+      it "can have widths and heights in multiples of 16 if the output is vp6" do
+        lambda { EncodingDotCom::Format.new("output" => "vp6", "size" => "32x32") }.should_not raise_error
+        lambda { EncodingDotCom::Format.new("output" => "vp6", "size" => "33x33") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
       end
     end
   end
@@ -80,7 +72,7 @@ describe "Encoding.com Format" do
     end
 
     it "should create a size node" do
-      format = EncodingDotCom::Format.new("output" => "flv", "height" => 480)
+      format = EncodingDotCom::Format.new("output" => "flv", "size" => "0x480")
       Nokogiri::XML::Builder.new do |b|
         format.build_xml(b)
       end.to_xml.should have_xpath("/format/size[text()='0x480']")

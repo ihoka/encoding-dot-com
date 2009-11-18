@@ -3,9 +3,9 @@ module EncodingDotCom
   end
 
   class Format
-    ALLOWED_OUTPUT_FORMATS = %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune mp3 wma thumbnail}.freeze
+    ALLOWED_OUTPUT_FORMATS = %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma thumbnail}.freeze
 
-    attr_reader :output
+    attr_reader :output, :size
     
     def initialize(attributes={})
       @output = attributes["output"]
@@ -13,20 +13,15 @@ module EncodingDotCom
 
       (class << self; self; end).send :include, EncodingDotCom.const_get("AttributeRestrictions" + @output.capitalize)
 
-      @width = attributes["width"] || default_width
-      @height = attributes["height"] || default_height
-
+      @size = attributes["size"]
+      
       raise IllegalFormatAttribute.new unless valid_attributes?
-    end
-
-    def size
-      "#{@width}x#{@height}" if size_specified?
     end
 
     def build_xml(builder)
       builder.format {
         builder.output @output
-        if size_specified?
+        if size
           builder.size self.size
         end
       }
@@ -40,18 +35,6 @@ module EncodingDotCom
 
     def valid_size?
       true
-    end
-    
-    def default_width
-      0
-    end
-
-    def default_height
-      0
-    end
-    
-    def size_specified?
-      @height != 0 || @width != 0
     end
   end
 end
