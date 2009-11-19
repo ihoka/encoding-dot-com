@@ -6,6 +6,10 @@ describe "Encoding.com Thumbnail Format" do
     EncodingDotCom::ThumbnailFormat.new.output.should == "thumbnail"
   end
 
+  it "should return a ThumbnailFormat if the output is 'thumbnail'" do
+    EncodingDotCom::Format.create("output" => "thumbnail").should be_instance_of(EncodingDotCom::ThumbnailFormat)
+  end
+  
   it "should produce a format node in the xml output" do
     format = EncodingDotCom::ThumbnailFormat.new
     Nokogiri::XML::Builder.new do |b|
@@ -14,6 +18,8 @@ describe "Encoding.com Thumbnail Format" do
   end
 
   it "should produce an output node in the xml output" do
+#    Format.create("output" => "thumbnail") #=> ThumbnailFormat
+    
     format = EncodingDotCom::ThumbnailFormat.new
     Nokogiri::XML::Builder.new do |b|
       format.build_xml(b)

@@ -2,6 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Encoding.com Format" do
 
+  it "should return a Format with MP4 restrictions if the output is 'mp4'" do
+    EncodingDotCom::Format.create("output" => "mp4").should be_instance_of(EncodingDotCom::Format)
+    EncodingDotCom::Format.create("output" => "mp4").should be_kind_of(EncodingDotCom::AttributeRestrictionsMp4)    
+  end
+  
   describe "output" do
     it "should have a output attribute" do
       EncodingDotCom::Format.new("output" => "flv").output.should == "flv"
@@ -15,8 +20,8 @@ describe "Encoding.com Format" do
       lambda { EncodingDotCom::Format.new("output" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
     end
 
-    it "should allow flv, fl9, wmv, 3gp, mp4, m4v, ipod, iphone, appletv, psp, zune, mp3, wma and thumbnail output formats" do
-      %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma thumbnail}.each do |format|
+    %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma}.each do |format|
+      it "should allow #{format} as an output format" do
         lambda { EncodingDotCom::Format.new("output" => format) }.should_not raise_error
       end
     end

@@ -2,7 +2,7 @@ module EncodingDotCom
   class ThumbnailFormat
     attr_reader :output
     
-    def initialize
+    def initialize(attributes={})
       @output = "thumbnail"
     end
 
@@ -14,7 +14,7 @@ module EncodingDotCom
   end
   
   class Format
-    ALLOWED_OUTPUT_FORMATS = %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma thumbnail}.freeze
+    ALLOWED_OUTPUT_FORMATS = %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma}.freeze
     ALLOWED_ATTRIBUTES = %w{output size bitrate framerate video_codec audio_bitrate audio_sample_rate audio_codec audio_channels_number audio_volume two_pass cbr maxrate minrate bufsize keyframe start duration rc_init_occupancy deinterlacing crop_top crop_left crop_right crop_bottom add_meta logo_source logo_x logo_y logo_mode logo_threshold turbo}
 
     # Define reader methods for all the allowed attributes
@@ -29,6 +29,14 @@ module EncodingDotCom
       raise IllegalFormatAttribute.new unless valid_attributes?
     end
 
+    def self.create(attributes)
+      if attributes["output"] == "thumbnail"
+        ThumbnailFormat.new(attributes)
+      else
+        Format.new(attributes)
+      end
+    end
+    
     def build_xml(builder, destination_url=nil)
       logo_attributes, other_attributes = ALLOWED_ATTRIBUTES.partition {|a| a[0..3] == "logo" }
       
