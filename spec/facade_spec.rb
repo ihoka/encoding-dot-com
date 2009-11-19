@@ -11,6 +11,11 @@ describe "Encoding.com Facade" do
     @http.should_receive(:post).with(EncodingDotCom::Facade::ENDPOINT,
                                      EncodingXpathMatcher.new(xpath)).and_return(stub("Http Response", :code => 200))
   end
+
+  def expect_response_xml(response_xml)
+    response = stub("Http Response", :code => 200, :to_s => response_xml)
+    @http.should_receive(:post).and_return(response)
+  end
   
   describe " any xml sent to encoding.com" do
     [:add_and_process, :status].each do |method|
@@ -75,6 +80,13 @@ describe "Encoding.com Facade" do
     end
   end
 
+  describe "calling add_and_process" do
+    it "should return the a media id" do
+      expect_response_xml("<response><MediaID>1234</MediaID></response>")
+      @facade.add_and_process(stub("source"), {}).should == 1234
+    end
+  end
+
   describe "xml sent to encoding.com to get the status of a job" do
     it "should include a action node with 'GetStatus'" do
       expect_xml_with_xpath("/query/action[text()='GetStatus']")
@@ -88,8 +100,7 @@ describe "Encoding.com Facade" do
 
     describe "simple status method" do
       it "should respond with a string status from encoding.com" do
-        response_xml = "<response><status>New</status></response>"
-        @http.should_receive(:post).and_return(stub("Http Response", :code => 200, :to_s => response_xml))
+        expect_response_xml("<response><status>New</status></response>")
         @facade.status("mediaid").should == "New"
       end
     end

@@ -18,32 +18,34 @@ module EncodingDotCom
     end
 
     def add_and_process(source, formats={})
-      query = Nokogiri::XML::Builder.new do |q|
-        q.query {
-          q.userid @user_id
-          q.userkey @user_key
-          q.action "AddMedia"
-          q.source source
-          formats.each {|url, format| format.build_xml(q, url) }
-        }
+      query = build_query("AddMedia") do |q|      
+        q.source source
+        formats.each {|url, format| format.build_xml(q, url) }
       end
-      make_request(query.to_xml)
+      media_id = make_request(query.to_xml).xpath("/response/MediaID").text
+      media_id.to_i if media_id
     end
 
     def status(media_id)
-      query = Nokogiri::XML::Builder.new do |q|
-        q.query {
-          q.userid @user_id
-          q.userkey @user_key
-          q.action "GetStatus"
-          q.mediaid media_id
-        }
+      query = build_query("GetStatus") do |q|
+        q.mediaid media_id
       end
       make_request(query.to_xml).xpath("/response/status").text
     end
 
     private
 
+    def build_query(action)
+      query = Nokogiri::XML::Builder.new do |q|
+        q.query {
+          q.userid @user_id
+          q.userkey @user_key
+          q.action action
+          yield q
+        }
+      end
+    end
+    
     def make_request(xml)
       response = @http.post(ENDPOINT, :xml => xml)
       raise AvailabilityError.new unless response.code.to_s == "200"
