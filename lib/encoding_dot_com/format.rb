@@ -15,10 +15,11 @@ module EncodingDotCom
       raise IllegalFormatAttribute.new unless valid_attributes?
     end
 
-    def build_xml(builder)
+    def build_xml(builder, destination_url=nil)
       logo_attributes, other_attributes = ALLOWED_ATTRIBUTES.partition {|a| a[0..3] == "logo" }
       
       builder.format {
+        builder.destination destination_url
         other_attributes.each {|attr| builder.send(attr, @attributes[attr]) if @attributes[attr] }
         if logo_attributes.any? {|attr| @attributes[attr] }
           builder.logo {

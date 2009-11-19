@@ -84,5 +84,12 @@ describe "Encoding.com Format" do
         format.build_xml(b)
       end.to_xml.should have_xpath("/format/logo/logo_x[text()='30']")
     end
+
+    it "should have a destination node with the url passed to build xml" do
+      format = EncodingDotCom::Format.new("output" => "flv")
+      Nokogiri::XML::Builder.new do |b|
+        format.build_xml(b, "http://example.com")
+      end.to_xml.should have_xpath("/format/destination[text()='http://example.com']")
+    end
   end
 end
