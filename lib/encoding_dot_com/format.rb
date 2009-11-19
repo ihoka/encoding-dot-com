@@ -9,12 +9,23 @@ module EncodingDotCom
     
     def initialize(attributes={})
       @attributes = attributes.merge("output" => "thumbnail")
+      raise IllegalFormatAttribute.new unless valid_attributes?      
     end
 
+    def valid_attributes?
+      valid_time?
+    end
+    
     def build_xml(builder, destination_url=nil)
       builder.format {
         builder.output self.output
       }
+    end
+
+    private
+    
+    def valid_time?
+      time.nil? || time.to_f > 0.01
     end
   end
   

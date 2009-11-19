@@ -23,4 +23,10 @@ describe "Encoding.com Thumbnail Format" do
       format.build_xml(b)
     end.to_xml.should have_xpath("/format/output[text()='thumbnail']")
   end
+
+  describe "valid times" do
+    it "can be a number greater than 0.01" do
+      lambda { EncodingDotCom::ThumbnailFormat.new("time" => "0") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+    end
+  end
 end
