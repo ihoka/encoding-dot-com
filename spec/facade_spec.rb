@@ -78,7 +78,7 @@ describe "Encoding.com Facade" do
   describe "xml sent to encoding.com to get the status of a job" do
     it "should include a action node with 'GetStatus'" do
       expect_xml_with_xpath("/query/action[text()='GetStatus']")
-      @facade.status(stub("mediaid"))
+      @facade.status("mediaid")
     end
 
     it "should include a media id node" do
@@ -89,10 +89,8 @@ describe "Encoding.com Facade" do
     describe "simple status method" do
       it "should respond with a string status from encoding.com" do
         response_xml = "<response><status>New</status></response>"
-        @http.should_receive(:post).with(EncodingDotCom::Facade::ENDPOINT,
-                                         anything()).and_return(stub("Http Response", :code => 200, :to_s => response_xml))
-
-        @facade.status(stub("mediaid")).should == "New"
+        @http.should_receive(:post).and_return(stub("Http Response", :code => 200, :to_s => response_xml))
+        @facade.status("mediaid").should == "New"
       end
     end
   end
