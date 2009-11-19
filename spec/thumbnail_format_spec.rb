@@ -18,8 +18,6 @@ describe "Encoding.com Thumbnail Format" do
   end
 
   it "should produce an output node in the xml output" do
-#    Format.create("output" => "thumbnail") #=> ThumbnailFormat
-    
     format = EncodingDotCom::ThumbnailFormat.new
     Nokogiri::XML::Builder.new do |b|
       format.build_xml(b)
