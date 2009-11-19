@@ -39,7 +39,7 @@ module EncodingDotCom
           q.mediaid media_id
         }
       end
-      make_request(query.to_xml)
+      make_request(query.to_xml).xpath("/response/status").text
     end
 
     private
@@ -47,12 +47,13 @@ module EncodingDotCom
     def make_request(xml)
       response = @http.post(ENDPOINT, :xml => xml)
       raise AvailabilityError.new unless response.code.to_s == "200"
-      check_for_response_errors(response.to_s)
-      true
+      xml = Nokogiri::XML(response.to_s)
+      check_for_response_errors(xml)
+      xml
     end
 
     def check_for_response_errors(xml)
-      errors = Nokogiri::XML(xml).xpath("/response/errors/error").map {|e| e.text }
+      errors = xml.xpath("/response/errors/error").map {|e| e.text }
       raise MessageError.new(errors.join(", ")) unless errors.empty?
     end
   end

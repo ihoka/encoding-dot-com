@@ -85,5 +85,15 @@ describe "Encoding.com Facade" do
       expect_xml_with_xpath("/query/mediaid[text()='abcd']")
       @facade.status("abcd")
     end
+
+    describe "simple status method" do
+      it "should respond with a string status from encoding.com" do
+        response_xml = "<response><status>New</status></response>"
+        @http.should_receive(:post).with(EncodingDotCom::Facade::ENDPOINT,
+                                         anything()).and_return(stub("Http Response", :code => 200, :to_s => response_xml))
+
+        @facade.status(stub("mediaid")).should == "New"
+      end
+    end
   end
 end
