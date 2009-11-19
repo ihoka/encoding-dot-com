@@ -17,7 +17,7 @@ describe "Encoding.com Facade" do
     @http.should_receive(:post).and_return(response)
   end
   
-  describe " any xml sent to encoding.com" do
+  describe "any xml sent to encoding.com" do
     [:add_and_process, :status].each do |method|
       it "should have a root query node for method #{method}" do
         expect_xml_with_xpath("/query")
