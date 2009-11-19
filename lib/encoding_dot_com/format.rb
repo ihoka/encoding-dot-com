@@ -13,7 +13,7 @@ module EncodingDotCom
     end
 
     def valid_attributes?
-      valid_time?
+      valid_time? && valid_height? && valid_width?
     end
     
     def build_xml(builder, destination_url=nil)
@@ -26,6 +26,14 @@ module EncodingDotCom
     
     def valid_time?
       time.nil? || time.to_f > 0.01 || time.to_s =~ /\d\d:[0-5]\d:[0-5]\d(\.\d+)?/
+    end
+
+    def valid_height?
+      height.nil? || height.to_i > 0
+    end
+
+    def valid_width?
+      width.nil? || width.to_i > 0
     end
   end
   

@@ -34,4 +34,16 @@ describe "Encoding.com Thumbnail Format" do
       lambda { EncodingDotCom::ThumbnailFormat.new("time" => "00:00:01.5") }.should_not raise_error
     end
   end
+
+  describe "valid dimensions" do
+    it "should be a positive integer height" do
+      lambda { EncodingDotCom::ThumbnailFormat.new("height" => -1) }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+      lambda { EncodingDotCom::ThumbnailFormat.new("height" => 1) }.should_not raise_error      
+    end
+
+    it "should be a positive integer width" do
+      lambda { EncodingDotCom::ThumbnailFormat.new("width" => -1) }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+      lambda { EncodingDotCom::ThumbnailFormat.new("width" => 1) }.should_not raise_error      
+    end
+  end
 end
