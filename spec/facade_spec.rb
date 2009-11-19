@@ -13,19 +13,21 @@ describe "Encoding.com Facade" do
   end
   
   describe " any xml sent to encoding.com" do
-    it "should have a root query node" do
-      expect_xml_with_xpath("/query")
-      @facade.add_and_process(stub("source"), {})
-    end
+    [:add_and_process, :status].each do |method|
+      it "should have a root query node for method #{method}" do
+        expect_xml_with_xpath("/query")
+        @facade.send(method, stub("source"))
+      end
 
-    it "should have a user_id node" do
-      expect_xml_with_xpath("/query/userid[text()=1234]")
-      @facade.add_and_process(stub("source"), {})
-    end
+      it "should have a user_id node for method #{method}" do
+        expect_xml_with_xpath("/query/userid[text()=1234]")
+        @facade.send(method, stub("source"))        
+      end
 
-    it "should have a user key node" do
-      expect_xml_with_xpath("/query/userkey[text()='abcd']")
-      @facade.add_and_process(stub("source"), {})
+      it "should have a user key node for method #{method}" do
+        expect_xml_with_xpath("/query/userkey[text()='abcd']")
+        @facade.send(method, stub("source"))                
+      end
     end
   end
 
@@ -70,6 +72,18 @@ describe "Encoding.com Facade" do
       expect_xml_with_xpath("/query/format/destination[text()='http://example.com']")
       format = EncodingDotCom::Format.new("output" => "flv")
       @facade.add_and_process(stub("source"), {"http://example.com" => format})
+    end
+  end
+
+  describe "xml sent to encoding.com to get the status of a job" do
+    it "should include a action node with 'GetStatus'" do
+      expect_xml_with_xpath("/query/action[text()='GetStatus']")
+      @facade.status(stub("mediaid"))
+    end
+
+    it "should include a media id node" do
+      expect_xml_with_xpath("/query/mediaid[text()='abcd']")
+      @facade.status("abcd")
     end
   end
 end
