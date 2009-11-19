@@ -27,6 +27,11 @@ describe "Encoding.com Thumbnail Format" do
   describe "valid times" do
     it "can be a number greater than 0.01" do
       lambda { EncodingDotCom::ThumbnailFormat.new("time" => "0") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+      lambda { EncodingDotCom::ThumbnailFormat.new("time" => "0.5") }.should_not raise_error
+    end
+
+    it "can be specified in HH:MM::SS.ms format" do
+      lambda { EncodingDotCom::ThumbnailFormat.new("time" => "00:00:01.5") }.should_not raise_error
     end
   end
 end

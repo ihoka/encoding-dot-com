@@ -25,7 +25,7 @@ module EncodingDotCom
     private
     
     def valid_time?
-      time.nil? || time.to_f > 0.01
+      time.nil? || time.to_f > 0.01 || time.to_s =~ /\d\d:[0-5]\d:[0-5]\d(\.\d+)?/
     end
   end
   
