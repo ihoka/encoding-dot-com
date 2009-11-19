@@ -1,9 +1,14 @@
 module EncodingDotCom
   class ThumbnailFormat
-    attr_reader :output
+    ALLOWED_ATTRIBUTES = %w{output time width height}.freeze
+
+    # Define reader methods for all the allowed attributes
+    ALLOWED_ATTRIBUTES.each do |attr|
+      define_method(attr) { @attributes[attr] }
+    end
     
     def initialize(attributes={})
-      @output = "thumbnail"
+      @attributes = attributes.merge("output" => "thumbnail")
     end
 
     def build_xml(builder, destination_url=nil)
