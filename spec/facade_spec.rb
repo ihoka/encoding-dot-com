@@ -97,12 +97,12 @@ describe "Encoding.com Facade" do
       expect_xml_with_xpath("/query/mediaid[text()='abcd']")
       @facade.status("abcd")
     end
+  end
 
-    describe "simple status method" do
-      it "should respond with a string status from encoding.com" do
-        expect_response_xml("<response><status>New</status></response>")
-        @facade.status("mediaid").should == "New"
-      end
+  describe "calling simple status method" do
+    it "should respond with a string status from encoding.com" do
+      expect_response_xml("<response><status>New</status></response>")
+      @facade.status("mediaid").should == "New"
     end
   end
 end
