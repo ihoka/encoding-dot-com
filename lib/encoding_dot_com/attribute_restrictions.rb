@@ -1,7 +1,7 @@
 module EncodingDotCom
   module AttributeRestrictionsZune
     def validate_size
-      allowed_sizes = ["320x120", "320x180", "320x0", "0x120", "0x180"]
+      allowed_sizes = %w{320x120 320x180 320x0 0x120 0x180}
       unless size.nil? || allowed_sizes.include?(size)
         raise IllegalFormatAttribute.new("Size can only be one of #{allowed_sizes.join(',')} but was #{size}")
       end
@@ -10,7 +10,7 @@ module EncodingDotCom
 
   module AttributeRestrictionsIpod
     def validate_size
-      allowed_sizes = ["320x240", "640x480"]
+      allowed_sizes = %w{320x240 640x480}
       unless size.nil? || allowed_sizes.include?(size)
         raise IllegalFormatAttribute.new("Size can only be one of #{allowed_sizes.join(',')} but was #{size}")
       end
@@ -18,8 +18,12 @@ module EncodingDotCom
   end
 
   module AttributeRestrictionsFlv
+    def validate_audio_bitrate
+      allowed_bitrates = %w{32k 40k 48k 56k 64k 80k 96k 112k 128k 144k 160k 192k 224k 256k 320k}
+    end
+    
     def validate_video_codec
-      allowed_codecs = ["flv", "libx264", "vp6"]
+      allowed_codecs = %w{flv libx264 vp6}
       unless video_codec.nil? || allowed_codecs.include?(video_codec)
         raise IllegalFormatAttribute.new("Video codec can only be one of #{allowed_codecs.join(',')} but was #{video_codec}")
       end
@@ -35,7 +39,7 @@ module EncodingDotCom
 
   module AttributeRestrictionsMp4
     def validate_video_codec
-      allowed_codecs = ["mpeg4", "libx264"]
+      allowed_codecs = %w{mpeg4 libx264}
       unless video_codec.nil? || allowed_codecs.include?(video_codec)
         raise IllegalFormatAttribute.new("Video codec can only be one of #{allowed_codecs.join(',')} but was #{video_codec}")
       end
