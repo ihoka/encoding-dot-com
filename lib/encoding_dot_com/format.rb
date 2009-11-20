@@ -12,7 +12,7 @@ module EncodingDotCom
       @attributes = attributes
       check_valid_output_format
       mixin_output_attribute_restrictions
-      raise IllegalFormatAttribute.new unless valid_attributes?
+      validate_attributes
     end
 
     def self.create(attributes)
@@ -51,16 +51,15 @@ module EncodingDotCom
       (class << self; self; end).send(:include, restrictions)
     end
     
-    def valid_attributes?
-      valid_size? && valid_video_codec?
+    def validate_attributes
+      validate_video_codec
+      validate_size
     end
 
-    def valid_size?
-      true
+    def validate_size
     end
 
-    def valid_video_codec?
-      true
+    def validate_video_codec
     end
   end
 end
