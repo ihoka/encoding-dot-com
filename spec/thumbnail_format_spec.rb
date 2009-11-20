@@ -9,19 +9,34 @@ describe "Encoding.com Thumbnail Format" do
   it "should return a ThumbnailFormat if the output is 'thumbnail'" do
     EncodingDotCom::Format.create("output" => "thumbnail").should be_instance_of(EncodingDotCom::ThumbnailFormat)
   end
+
+  def format_xml(attributes={})
+    format = EncodingDotCom::ThumbnailFormat.new(attributes)
+    Nokogiri::XML::Builder.new {|b| format.build_xml(b, "http://example.com") }.to_xml
+  end
   
   it "should produce a format node in the xml output" do
-    format = EncodingDotCom::ThumbnailFormat.new
-    Nokogiri::XML::Builder.new do |b|
-      format.build_xml(b)
-    end.to_xml.should have_xpath("/format")
+    format_xml.should have_xpath("/format")
   end
 
   it "should produce an output node in the xml output" do
-    format = EncodingDotCom::ThumbnailFormat.new
-    Nokogiri::XML::Builder.new do |b|
-      format.build_xml(b)
-    end.to_xml.should have_xpath("/format/output[text()='thumbnail']")
+    format_xml.should have_xpath("/format/output[text()='thumbnail']")
+  end
+
+  it "should produce a height node in the xml output" do
+    format_xml("height" => 10).should have_xpath("/format/height[text()='10']")
+  end
+
+  it "should produce a width node in the xml output" do
+    format_xml("width" => 10).should have_xpath("/format/width[text()='10']")
+  end
+
+  it "should produce a time node in the xml output" do
+    format_xml("time" => 10).should have_xpath("/format/time[text()='10']")
+  end
+
+  it "should produce a destination node in the output" do
+    format_xml.should have_xpath("/format/destination[text()='http://example.com']")
   end
 
   describe "valid times" do
