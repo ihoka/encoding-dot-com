@@ -1,42 +1,4 @@
 module EncodingDotCom
-  class ThumbnailFormat
-    ALLOWED_ATTRIBUTES = %w{output time width height}.freeze
-
-    # Define reader methods for all the allowed attributes
-    ALLOWED_ATTRIBUTES.each do |attr|
-      define_method(attr) { @attributes[attr] }
-    end
-    
-    def initialize(attributes={})
-      @attributes = attributes.merge("output" => "thumbnail")
-      raise IllegalFormatAttribute.new unless valid_attributes?      
-    end
-
-    def valid_attributes?
-      valid_time? && valid_height? && valid_width?
-    end
-    
-    def build_xml(builder, destination_url=nil)
-      builder.format {
-        builder.output self.output
-      }
-    end
-
-    private
-    
-    def valid_time?
-      time.nil? || time.to_f > 0.01 || time.to_s =~ /\d\d:[0-5]\d:[0-5]\d(\.\d+)?/
-    end
-
-    def valid_height?
-      height.nil? || height.to_i > 0
-    end
-
-    def valid_width?
-      width.nil? || width.to_i > 0
-    end
-  end
-  
   class Format
     ALLOWED_OUTPUT_FORMATS = %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma}.freeze
     ALLOWED_ATTRIBUTES = %w{output size bitrate framerate video_codec audio_bitrate audio_sample_rate audio_codec audio_channels_number audio_volume two_pass cbr maxrate minrate bufsize keyframe start duration rc_init_occupancy deinterlacing crop_top crop_left crop_right crop_bottom add_meta logo_source logo_x logo_y logo_mode logo_threshold turbo}.freeze
