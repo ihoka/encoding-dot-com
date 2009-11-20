@@ -1,5 +1,5 @@
 module EncodingDotCom
-  class ThumbnailFormat
+  class ThumbnailFormat < Format
     ALLOWED_ATTRIBUTES = %w{output time width height}.freeze
 
     # Define reader methods for all the allowed attributes
