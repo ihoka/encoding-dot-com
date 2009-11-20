@@ -12,6 +12,10 @@ module EncodingDotCom
   end
 
   module AttributeRestrictionsFlv
+    def valid_video_codec?
+      video_codec.nil? || ["flv", "libx264", "vp6"].include?(video_codec)
+    end
+    
     def valid_size?
       return true if size.nil?
       (video_codec == "vp6") ? size.split("x").all? {|n| (n.to_i % 16) == 0 } : true

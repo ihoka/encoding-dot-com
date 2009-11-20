@@ -52,10 +52,14 @@ module EncodingDotCom
     end
     
     def valid_attributes?
-      valid_size?
+      valid_size? && valid_video_codec?
     end
 
     def valid_size?
+      true
+    end
+
+    def valid_video_codec?
       true
     end
   end
