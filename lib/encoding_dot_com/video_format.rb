@@ -1,13 +1,9 @@
 module EncodingDotCom
   class VideoFormat < Format
     ALLOWED_OUTPUT_FORMATS = %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune mp3 wma}.freeze
-    ALLOWED_ATTRIBUTES = %w{output size bitrate framerate video_codec audio_bitrate audio_sample_rate audio_codec audio_channels_number audio_volume two_pass cbr maxrate minrate bufsize keyframe start duration rc_init_occupancy deinterlacing crop_top crop_left crop_right crop_bottom add_meta logo_source logo_x logo_y logo_mode logo_threshold turbo}.freeze
     BOOLEAN_ATTRIBUTES = %w{two_pass cbr deinterlacing add_meta turbo}.freeze
     
-    # Define reader methods for all the allowed attributes
-    ALLOWED_ATTRIBUTES.each do |attr|
-      define_method(attr) { @attributes[attr] }
-    end
+    allowed_attributes :output, :size, :bitrate, :framerate, :video_codec, :audio_bitrate, :audio_sample_rate, :audio_codec, :audio_channels_number, :audio_volume, :two_pass, :cbr, :maxrate, :minrate, :bufsize, :keyframe, :start, :duration, :rc_init_occupancy, :deinterlacing, :crop_top, :crop_left, :crop_right, :crop_bottom, :add_meta, :logo_source, :logo_x, :logo_y, :logo_mode, :logo_threshold, :turbo
     
     def initialize(attributes={})
       @attributes = attributes
@@ -17,7 +13,7 @@ module EncodingDotCom
     end
 
     def build_xml(builder, destination_url=nil)
-      logo_attributes, other_attributes = ALLOWED_ATTRIBUTES.partition {|a| a[0..3] == "logo" }
+      logo_attributes, other_attributes = self.class.allowed_attributes.partition {|a| a[0..3] == "logo" }
       
       builder.format {
         builder.destination destination_url
