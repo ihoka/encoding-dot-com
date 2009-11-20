@@ -119,5 +119,21 @@ describe "Encoding.com Format" do
         format.build_xml(b, "http://example.com")
       end.to_xml.should have_xpath("/format/destination[text()='http://example.com']")
     end
+
+    %w{two_pass cbr deinterlacing add_meta turbo}.each do |bool|
+      it "should output boolean attribute #{bool} as yes when true" do
+        format = EncodingDotCom::Format.new("output" => "flv", bool => true)
+        Nokogiri::XML::Builder.new do |b|
+          format.build_xml(b, "http://example.com")
+        end.to_xml.should have_xpath("/format/#{bool}[text()='yes']")
+      end
+
+      it "should output boolean attribute #{bool} as no when false" do
+        format = EncodingDotCom::Format.new("output" => "flv", bool => false)
+        Nokogiri::XML::Builder.new do |b|
+          format.build_xml(b, "http://example.com")
+        end.to_xml.should have_xpath("/format/#{bool}[text()='no']")
+      end
+    end
   end
 end
