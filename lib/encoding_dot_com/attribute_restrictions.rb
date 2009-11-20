@@ -1,5 +1,4 @@
 module EncodingDotCom
-
   module AttributeRestrictionsZune
     def valid_size?
       size.nil? || ["320x120", "320x180", "320x0", "0x120", "0x180"].include?(size)
@@ -12,13 +11,11 @@ module EncodingDotCom
     end
   end
 
-  module AttributeRestrictionsVp6
-    def valid_size?
-      size.nil? || size.split("x").all? {|n| (n.to_i % 16) == 0 }
-    end
-  end
-
   module AttributeRestrictionsFlv
+    def valid_size?
+      return true if size.nil?
+      (video_codec == "vp6") ? size.split("x").all? {|n| (n.to_i % 16) == 0 } : true
+    end
   end
 
   module AttributeRestrictionsFl9

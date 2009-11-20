@@ -21,7 +21,7 @@ describe "Encoding.com Format" do
       lambda { EncodingDotCom::Format.new("output" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
     end
 
-    %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune vp6 mp3 wma}.each do |format|
+    %w{flv fl9 wmv 3gp mp4 m4v ipod iphone appletv psp zune mp3 wma}.each do |format|
       it "should allow #{format} as an output format" do
         lambda { EncodingDotCom::Format.new("output" => format) }.should_not raise_error
       end
@@ -48,9 +48,9 @@ describe "Encoding.com Format" do
         lambda { EncodingDotCom::Format.new("output" => "ipod", "size" => "400x400") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
       end
 
-      it "should have widths and heights in multiples of 16 if the output format is vp6" do
-        lambda { EncodingDotCom::Format.new("output" => "vp6", "size" => "32x32") }.should_not raise_error
-        lambda { EncodingDotCom::Format.new("output" => "vp6", "size" => "33x33") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+      it "should have widths and heights in multiples of 16 if the output format is flv and video_codec is vp6" do
+        lambda { EncodingDotCom::Format.new("output" => "flv", "size" => "32x32", "video_codec" => "vp6") }.should_not raise_error
+        lambda { EncodingDotCom::Format.new("output" => "flv", "size" => "33x33", "video_codec" => "vp6") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
       end
     end
   end
