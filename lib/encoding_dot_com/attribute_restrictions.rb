@@ -6,8 +6,6 @@ module EncodingDotCom
         raise IllegalFormatAttribute.new("Size can only be one of #{allowed_sizes.join(',')} but was #{size}")
       end
     end
-
-    
   end
 
   module AttributeRestrictionsIpod
@@ -35,6 +33,15 @@ module EncodingDotCom
     end
   end
 
+  module AttributeRestrictionsMp4
+    def validate_video_codec
+      allowed_codecs = ["mpeg4", "libx264"]
+      unless video_codec.nil? || allowed_codecs.include?(video_codec)
+        raise IllegalFormatAttribute.new("Video codec can only be one of #{allowed_codecs.join(',')} but was #{video_codec}")
+      end
+    end
+  end
+
   module AttributeRestrictionsFl9
   end
 
@@ -43,10 +50,7 @@ module EncodingDotCom
 
   module AttributeRestrictions3gp
   end
-
-  module AttributeRestrictionsMp4
-  end
-
+  
   module AttributeRestrictionsM4v
   end
 

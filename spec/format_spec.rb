@@ -65,6 +65,16 @@ describe "Encoding.com Format" do
     it "cannot be any other codec if output if Flv" do
       lambda { EncodingDotCom::Format.new("output" => "flv", "video_codec" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
     end
+
+    %w{mpeg4 libx264}.each do |codec|
+      it "can be #{codec} if the output format is MP4" do
+        lambda { EncodingDotCom::Format.new("output" => "mp4", "video_codec" => codec) }.should_not raise_error
+      end
+    end
+
+    it "cannot be any other codec if output if MP4" do
+      lambda { EncodingDotCom::Format.new("output" => "mp4", "video_codec" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+    end
   end
   
   describe "#build_xml" do
