@@ -28,13 +28,7 @@ module EncodingDotCom
         raise IllegalFormatAttribute.new("Video codec can only be one of #{allowed_codecs.join(',')} but was #{video_codec}")
       end
     end
-    
-    def validate_size
-      return if size.nil?
-      if video_codec == "vp6" && ! size.split("x").all? {|n| (n.to_i % 16) == 0 }
-        raise IllegalFormatAttribute.new("Dimensions #{} should be multiples of 16")
-      end
-    end
+
   end
 
   module AttributeRestrictionsMp4

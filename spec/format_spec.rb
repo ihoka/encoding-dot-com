@@ -47,11 +47,6 @@ describe "Encoding.com video format" do
       it "should have sizes 320x240 or 640x480 if the output format is ipod" do
         lambda { EncodingDotCom::VideoFormat.new("output" => "ipod", "size" => "400x400") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
       end
-
-      it "should have widths and heights in multiples of 16 if the output format is flv and video_codec is vp6" do
-        lambda { EncodingDotCom::VideoFormat.new("output" => "flv", "size" => "32x32", "video_codec" => "vp6") }.should_not raise_error
-        lambda { EncodingDotCom::VideoFormat.new("output" => "flv", "size" => "33x33", "video_codec" => "vp6") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
-      end
     end
   end
 

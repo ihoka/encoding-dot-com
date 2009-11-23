@@ -4,6 +4,8 @@ module EncodingDotCom
       def create(attributes)
         if attributes["output"] == "thumbnail"
           ThumbnailFormat.new(attributes)
+        elsif attributes["output"] == "flv" && attributes["video_codec"] == "vp6"
+          FLVVP6Format.new(attributes)
         else
           VideoFormat.new(attributes)
         end
