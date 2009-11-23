@@ -131,4 +131,37 @@ describe "Encoding.com video format" do
       end
     end
   end
+  
+  describe "setting allowed attributes on a format" do
+    it "should have an attribute :foo" do
+      class ExampleFormat1 < EncodingDotCom::Format
+        allowed_attributes :foo
+      end
+      ExampleFormat1.allowed_attributes.should == ["foo"]
+    end
+    
+    it "should be able to set allowed attributes cumulatively" do
+      class ExampleFormat2 < EncodingDotCom::Format
+        allowed_attributes :foo
+        allowed_attributes :bar
+      end
+      ExampleFormat2.allowed_attributes.should == ["foo", "bar"]
+    end
+  end
+  
+  describe "setting boolean attributes on a format" do
+    it "should also create an allowed attribute" do
+      class ExampleFormat3 < EncodingDotCom::Format
+        boolean_attributes :foo
+      end
+      ExampleFormat3.allowed_attributes.should == ["foo"]
+    end
+    
+    it "should create a boolean attribute" do
+      class ExampleFormat4 < EncodingDotCom::Format
+        boolean_attributes :foo
+      end
+      ExampleFormat4.boolean_attributes.should == ["foo"]
+    end
+  end
 end

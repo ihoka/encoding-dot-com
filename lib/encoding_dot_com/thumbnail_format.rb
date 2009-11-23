@@ -12,15 +12,6 @@ module EncodingDotCom
       validate_height
       validate_width
     end
-    
-    def build_xml(builder, destination_url=nil)
-      builder.format {
-        builder.destination destination_url
-        self.class.allowed_attributes.each do |attribute|
-          builder.send(attribute, @attributes[attribute]) if @attributes[attribute]
-        end
-      }
-    end
 
     private
     
