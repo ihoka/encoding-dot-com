@@ -105,4 +105,57 @@ describe "Encoding.com Facade" do
       @facade.status("mediaid").should == "New"
     end
   end
+  
+  describe "calling get media list method" do
+    it "should include an action node with 'GetMediaList'" do
+      expect_xml_with_xpath("/query/action[text()='GetMediaList']")
+      @facade.list
+    end
+    
+    describe "returned values" do
+      before :each do
+        expect_response_xml(<<-END
+        <response>
+            <media>
+                <mediafile>foo.wmv</mediafile>
+                <mediaid>1234</mediaid>
+                <mediastatus>Closed</mediastatus>
+                <createdate>2009-01-01 12:00:01</createdate>
+                <startdate>2009-01-01 12:00:02</startdate>
+                <finishdate>2009-01-01 12:00:03</finishdate>
+            </media>
+        </response>
+        END
+        )
+      end
+      
+      it "should return an array of media list values" do
+        @facade.list.should be_kind_of(Enumerable)
+      end
+      
+      it "should have a hash of returned attributes with a mediafile key" do
+        @facade.list.first["mediafile"].should == "foo.wmv"
+      end
+      
+      it "should have a hash of returned attributes with a mediaid key" do
+        @facade.list.first["mediaid"].should == 1234
+      end
+      
+      it "should have a hash of returned attributes with a mediastatus key" do
+        @facade.list.first["mediastatus"].should == "Closed"
+      end
+      
+      it "should have a hash of returned attributes with a createdate key" do
+        @facade.list.first["createdate"].should == Time.local(2009, 1, 1, 12, 0, 1)
+      end
+
+      it "should have a hash of returned attributes with a startdate key" do
+        @facade.list.first["startdate"].should == Time.local(2009, 1, 1, 12, 0, 2)
+      end
+
+      it "should have a hash of returned attributes with a finishdate key" do
+        @facade.list.first["finishdate"].should == Time.local(2009, 1, 1, 12, 0, 3)
+      end
+    end
+  end
 end

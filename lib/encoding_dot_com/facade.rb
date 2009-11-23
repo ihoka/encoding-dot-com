@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'parsedate'
 
 module EncodingDotCom
   # A remote facade to the encoding.com API.
@@ -32,6 +33,20 @@ module EncodingDotCom
       end
       make_request(query.to_xml).xpath("/response/status").text
     end
+    
+    def list
+      query = build_query("GetMediaList")
+      make_request(query.to_xml).xpath("/response/media").map do |node|
+        attributes = {}
+        attributes["mediafile"] = (node / "mediafile").text
+        attributes["mediaid"] = (node / "mediaid").text.to_i
+        attributes["mediastatus"] = (node / "mediastatus").text
+        attributes["createdate"] = Time.local *ParseDate.parsedate((node / "createdate").text)
+        attributes["startdate"] = Time.local *ParseDate.parsedate((node / "startdate").text)
+        attributes["finishdate"] = Time.local *ParseDate.parsedate((node / "finishdate").text)
+        attributes
+      end
+    end
 
     private
 
@@ -41,7 +56,7 @@ module EncodingDotCom
           q.userid @user_id
           q.userkey @user_key
           q.action action
-          yield q
+          yield q if block_given?
         }
       end
     end
