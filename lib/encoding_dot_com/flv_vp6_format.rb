@@ -1,6 +1,6 @@
 module EncodingDotCom
   class FLVVP6Format < Format
-    allowed_attributes :output, :video_codec, :size, :destination
+    allowed_attributes :output, :video_codec, :size, :destination, :bitrate, :audio_bitrate, :audio_sample_rate, :audio_channels_number, :framerate
     BOOLEAN_ATTRIBUTES = %w{}
     
     def initialize(attributes={})
