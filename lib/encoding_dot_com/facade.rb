@@ -59,6 +59,7 @@ module EncodingDotCom
       response = make_request("GetMediaInfo") do |q|
         q.mediaid media_id
       end
+      MediaInfo.new(response)
     end
 
     private

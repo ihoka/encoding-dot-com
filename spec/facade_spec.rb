@@ -181,5 +181,71 @@ describe "Encoding.com Facade" do
       expect_xml_with_xpath("/query/mediaid[text()='5678']")
       @facade.cancel(5678)
     end
+
+    describe "returned media info object" do
+      before :each do
+        expect_response_xml(<<-END
+          <?xml version="1.0"?>
+          <response>
+            <bitrate>1807k</bitrate>
+            <duration>6464.83</duration>
+            <video_codec>mpeg4</video_codec>
+            <video_bitrate>1679k</video_bitrate>
+            <frame_rate>23.98</frame_rate>
+            <size>640x352</size>
+            <pixel_aspect_ratio>1:1</pixel_aspect_ratio>
+            <display_aspect_ratio>20:11</display_aspect_ratio>
+            <audio_codec>ac3</audio_codec>
+            <audio_sample_rate>48000</audio_sample_rate>
+            <audio_channels>2</audio_channels>
+          </response>
+        END
+        )
+      end
+
+      it "should have a bitrate" do
+        @facade.info(1234).bitrate.should == "1807k"
+      end
+
+      it "should have a duration" do
+        @facade.info(1234).duration.should == 6464.83
+      end
+
+      it "should have a video_codec" do
+        @facade.info(1234).video_codec.should == "mpeg4"
+      end
+
+      it "should have a video_bitrate" do
+        @facade.info(1234).video_bitrate.should == "1679k"
+      end
+
+      it "should have a frame rate" do
+        @facade.info(1234).frame_rate.should == 23.98
+      end
+
+      it "should have a size" do
+        @facade.info(1234).size.should == "640x352"
+      end
+
+      it "should hava a pixel aspect ratio" do
+        @facade.info(1234).pixel_aspect_ratio.should == "1:1"
+      end
+
+      it "should have a display aspect ratio" do
+        @facade.info(1234).display_aspect_ratio.should == "20:11"
+      end
+
+      it "should have an audio codec" do
+        @facade.info(1234).audio_codec.should == "ac3"
+      end
+
+      it "should have an audio sample rate" do
+        @facade.info(1234).audio_sample_rate.should == 48_000
+      end
+
+      it "should have audio channels" do
+        @facade.info(1234).audio_channels.should == 2
+      end
+    end
   end
 end
