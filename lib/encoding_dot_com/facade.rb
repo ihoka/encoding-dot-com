@@ -18,6 +18,11 @@ module EncodingDotCom
       @user_id, @user_key, @http = user_id, user_key, http
     end
 
+    # Add a video/image to the encoding.com queue to be encoded in
+    # various formats.
+    #
+    # Source is the source url
+    # formats is a hash of destination urls => format objects
     def add_and_process(source, formats={})
       query = build_query("AddMedia") do |q|      
         q.source source
@@ -27,13 +32,17 @@ module EncodingDotCom
       media_id.to_i if media_id
     end
 
+    # Returns the status string of a particular media item in the
+    # encoding.com queue. The status will be for the job as a whole,
+    # rather than individual ouput formats
     def status(media_id)
       query = build_query("GetStatus") do |q|
         q.mediaid media_id
       end
       make_request(query.to_xml).xpath("/response/status").text
     end
-    
+
+    # Returns a list of media in the encoding.com queue
     def list
       query = build_query("GetMediaList")
       make_request(query.to_xml).xpath("/response/media").map do |node|
