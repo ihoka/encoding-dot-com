@@ -1,3 +1,5 @@
+require 'parsedate'
+
 module EncodingDotCom
 
   # Represents a video or image in the encoding.com queue

@@ -1,5 +1,4 @@
 require 'nokogiri'
-require 'parsedate'
 
 module EncodingDotCom
   # A remote facade to the encoding.com API.
