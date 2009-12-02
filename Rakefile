@@ -10,6 +10,7 @@ begin
     gem.email = "roland.swingler@gmail.com"
     gem.homepage = "http://github.com/knaveofdiamonds/encoding-dot-com"
     gem.authors = ["Roland Swingler"]
+    gem.add_dependency "nokogiri"
     gem.add_development_dependency "rspec"
     gem.add_development_dependency "yard"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
