@@ -105,14 +105,14 @@ describe "Encoding.com Facade" do
       @facade.status("mediaid").should == "New"
     end
   end
-  
+
   describe "calling get media list method" do
     it "should include an action node with 'GetMediaList'" do
       expect_xml_with_xpath("/query/action[text()='GetMediaList']")
       @facade.list
     end
     
-    describe "returned values" do
+    describe "returned MediaListItems" do
       before :each do
         expect_response_xml(<<-END
         <response>
@@ -132,7 +132,7 @@ describe "Encoding.com Facade" do
       it "should return an array of media list values" do
         @facade.list.should be_kind_of(Enumerable)
       end
-      
+
       it "should have a hash of returned attributes with a mediafile key" do
         @facade.list.first.media_file.should == "foo.wmv"
       end
@@ -156,6 +156,13 @@ describe "Encoding.com Facade" do
       it "should have a hash of returned attributes with a finishdate key" do
         @facade.list.first.finish_date.should == Time.local(2009, 1, 1, 12, 0, 3)
       end
+    end
+  end
+
+  describe "deleting specified media and all its items in the queue" do
+    it "should have an action of 'CancelMedia'." do
+      expect_xml_with_xpath("/query/action[text()='CancelMedia']")
+      @facade.cancel(1234)
     end
   end
 end

@@ -28,7 +28,7 @@ module EncodingDotCom
         q.source source
         formats.each {|url, format| format.build_xml(q, url) }
       end
-      media_id = make_request(query.to_xml).xpath("/response/MediaID").text
+      media_id = make_request(query).xpath("/response/MediaID").text
       media_id.to_i if media_id
     end
 
@@ -39,13 +39,18 @@ module EncodingDotCom
       query = build_query("GetStatus") do |q|
         q.mediaid media_id
       end
-      make_request(query.to_xml).xpath("/response/status").text
+      make_request(query).xpath("/response/status").text
     end
 
     # Returns a list of media in the encoding.com queue
     def list
       query = build_query("GetMediaList")
-      make_request(query.to_xml).xpath("/response/media").map {|node| MediaListItem.new(node) }
+      make_request(query).xpath("/response/media").map {|node| MediaListItem.new(node) }
+    end
+
+    def cancel(media_id)
+      query = build_query("CancelMedia")
+      make_request(query)
     end
 
     private
@@ -58,7 +63,7 @@ module EncodingDotCom
           q.action action
           yield q if block_given?
         }
-      end
+      end.to_xml
     end
     
     def make_request(xml)
