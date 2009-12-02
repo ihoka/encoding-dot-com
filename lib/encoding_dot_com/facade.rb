@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'parsedate'
+require 'ostruct'
 
 module EncodingDotCom
   # A remote facade to the encoding.com API.
@@ -46,19 +47,23 @@ module EncodingDotCom
     def list
       query = build_query("GetMediaList")
       make_request(query.to_xml).xpath("/response/media").map do |node|
-        attributes = {}
-        attributes["mediafile"] = (node / "mediafile").text
-        attributes["mediaid"] = (node / "mediaid").text.to_i
-        attributes["mediastatus"] = (node / "mediastatus").text
-        attributes["createdate"] = Time.local *ParseDate.parsedate((node / "createdate").text)
-        attributes["startdate"] = Time.local *ParseDate.parsedate((node / "startdate").text)
-        attributes["finishdate"] = Time.local *ParseDate.parsedate((node / "finishdate").text)
+        attributes = OpenStruct.new
+        attributes.mediafile = (node / "mediafile").text
+        attributes.mediaid = (node / "mediaid").text.to_i
+        attributes.mediastatus = (node / "mediastatus").text
+        attributes.createdate = parse_time_node(node / "createdate")
+        attributes.startdate = parse_time_node(node / "startdate")
+        attributes.finishdate = parse_time_node(node / "finishdate")
         attributes
       end
     end
 
     private
 
+    def parse_time_node(node)
+      Time.local *ParseDate.parsedate(node.text)
+    end
+    
     def build_query(action)
       query = Nokogiri::XML::Builder.new do |q|
         q.query {
