@@ -47,6 +47,7 @@ module EncodingDotCom
       make_request("GetMediaList").xpath("/response/media").map {|node| MediaListItem.new(node) }
     end
 
+    # Cancels a media item in the encoding.com queue
     def cancel(media_id)
       make_request("CancelMedia")
     end
