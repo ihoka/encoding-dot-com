@@ -53,6 +53,8 @@ module EncodingDotCom
       end
     end
 
+    # Returns a MediaInfo object with some attributes of the video
+    # identified by media_id.
     def info(media_id)
       response = make_request("GetMediaInfo") do |q|
         q.mediaid media_id
