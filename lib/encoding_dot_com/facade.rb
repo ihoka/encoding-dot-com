@@ -24,11 +24,11 @@ module EncodingDotCom
     # Source is the source url
     # formats is a hash of destination urls => format objects
     def add_and_process(source, formats={})
-      query = build_query("AddMedia") do |q|      
+      response = make_request("AddMedia") do |q|      
         q.source source
         formats.each {|url, format| format.build_xml(q, url) }
       end
-      media_id = make_request(query).xpath("/response/MediaID").text
+      media_id = response.xpath("/response/MediaID").text
       media_id.to_i if media_id
     end
 
@@ -36,24 +36,31 @@ module EncodingDotCom
     # encoding.com queue. The status will be for the job as a whole,
     # rather than individual ouput formats
     def status(media_id)
-      query = build_query("GetStatus") do |q|
+      response = make_request("GetStatus") do |q|
         q.mediaid media_id
       end
-      make_request(query).xpath("/response/status").text
+      response.xpath("/response/status").text
     end
 
     # Returns a list of media in the encoding.com queue
     def list
-      query = build_query("GetMediaList")
-      make_request(query).xpath("/response/media").map {|node| MediaListItem.new(node) }
+      make_request("GetMediaList").xpath("/response/media").map {|node| MediaListItem.new(node) }
     end
 
     def cancel(media_id)
-      query = build_query("CancelMedia")
-      make_request(query)
+      make_request("CancelMedia")
     end
 
     private
+
+    def make_request(action_name, &block)
+      query = build_query(action_name, &block)
+      response = @http.post(ENDPOINT, :xml => query)
+      raise AvailabilityError.new unless response.code.to_s == "200"
+      xml = Nokogiri::XML(response.to_s)
+      check_for_response_errors(xml)
+      xml
+    end
 
     def build_query(action)
       query = Nokogiri::XML::Builder.new do |q|
@@ -66,14 +73,6 @@ module EncodingDotCom
       end.to_xml
     end
     
-    def make_request(xml)
-      response = @http.post(ENDPOINT, :xml => xml)
-      raise AvailabilityError.new unless response.code.to_s == "200"
-      xml = Nokogiri::XML(response.to_s)
-      check_for_response_errors(xml)
-      xml
-    end
-
     def check_for_response_errors(xml)
       errors = xml.xpath("/response/errors/error").map {|e| e.text }
       raise MessageError.new(errors.join(", ")) unless errors.empty?
