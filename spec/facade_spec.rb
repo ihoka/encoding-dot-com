@@ -134,27 +134,27 @@ describe "Encoding.com Facade" do
       end
       
       it "should have a hash of returned attributes with a mediafile key" do
-        @facade.list.first.mediafile.should == "foo.wmv"
+        @facade.list.first.media_file.should == "foo.wmv"
       end
       
       it "should have a hash of returned attributes with a mediaid key" do
-        @facade.list.first.mediaid.should == 1234
+        @facade.list.first.media_id.should == 1234
       end
       
       it "should have a hash of returned attributes with a mediastatus key" do
-        @facade.list.first.mediastatus.should == "Closed"
+        @facade.list.first.media_status.should == "Closed"
       end
       
       it "should have a hash of returned attributes with a createdate key" do
-        @facade.list.first.createdate.should == Time.local(2009, 1, 1, 12, 0, 1)
+        @facade.list.first.create_date.should == Time.local(2009, 1, 1, 12, 0, 1)
       end
 
       it "should have a hash of returned attributes with a startdate key" do
-        @facade.list.first.startdate.should == Time.local(2009, 1, 1, 12, 0, 2)
+        @facade.list.first.start_date.should == Time.local(2009, 1, 1, 12, 0, 2)
       end
 
       it "should have a hash of returned attributes with a finishdate key" do
-        @facade.list.first.finishdate.should == Time.local(2009, 1, 1, 12, 0, 3)
+        @facade.list.first.finish_date.should == Time.local(2009, 1, 1, 12, 0, 3)
       end
     end
   end
