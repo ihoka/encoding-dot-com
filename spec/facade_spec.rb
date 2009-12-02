@@ -162,7 +162,24 @@ describe "Encoding.com Facade" do
   describe "deleting specified media and all its items in the queue" do
     it "should have an action of 'CancelMedia'." do
       expect_xml_with_xpath("/query/action[text()='CancelMedia']")
-      @facade.cancel(1234)
+      @facade.cancel(5678)
+    end
+
+    it "should have a mediaid of 1234." do
+      expect_xml_with_xpath("/query/mediaid[text()='5678']")
+      @facade.cancel(5678)
+    end
+  end
+
+  describe "getting information about a specified media item" do
+    it "should have an action of 'GetMediaInfo'." do
+      expect_xml_with_xpath("/query/action[text()='GetMediaInfo']")
+      @facade.info(5678)
+    end
+
+    it "should have a mediaid of 1234." do
+      expect_xml_with_xpath("/query/mediaid[text()='5678']")
+      @facade.cancel(5678)
     end
   end
 end

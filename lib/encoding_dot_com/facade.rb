@@ -49,7 +49,15 @@ module EncodingDotCom
 
     # Cancels a media item in the encoding.com queue
     def cancel(media_id)
-      make_request("CancelMedia")
+      make_request("CancelMedia") do |q|
+        q.mediaid media_id
+      end
+    end
+
+    def info(media_id)
+      response = make_request("GetMediaInfo") do |q|
+        q.mediaid media_id
+      end
     end
 
     private
