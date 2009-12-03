@@ -16,9 +16,9 @@ describe "CurbAdapter" do
   end
 
   it "should raise an AvailabilityError if a Curl exception is raised" do
-    @mock_easy.should_receive(:http_post).and_raise(EncodingDotCom::AvailabilityError.new("Boom!"))
+    @mock_easy.should_receive(:http_post).and_raise(StandardError.new("Boom!"))
 
-    lambda { @http.post("http://example.com") }.should raise_error(EncodingDotCom::AvailabilityError)
+    lambda { @http.post("http://example.com") }.should raise_error(EncodingDotCom::AvailabilityError, "Boom!")
   end
 
   it "should return a response with a status code" do
