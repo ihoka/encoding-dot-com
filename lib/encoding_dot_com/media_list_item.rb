@@ -21,7 +21,8 @@ module EncodingDotCom
     private
 
     def parse_time_node(node)
-      Time.local *ParseDate.parsedate(node.text)
+      time_elements = ParseDate.parsedate(node.text)
+      Time.local *time_elements unless time_elements.all? {|e| e.nil? || e == 0 }
     end
   end
 end
