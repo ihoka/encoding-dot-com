@@ -41,6 +41,14 @@ module EncodingDotCom
       response.xpath("/response/status").text
     end
 
+    # Returns the full status of an entry in the encoding.com queue,
+    # including details about the status of individual formats
+    def full_status(media_id)
+      response = make_request("GetStatus") do |q|
+        q.mediaid media_id
+      end
+    end
+    
     # Returns a list of media in the encoding.com queue
     def list
       make_request("GetMediaList").xpath("/response/media").map {|node| MediaListItem.new(node) }
