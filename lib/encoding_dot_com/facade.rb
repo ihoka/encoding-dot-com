@@ -67,8 +67,8 @@ module EncodingDotCom
     def make_request(action_name, &block)
       query = build_query(action_name, &block)
       response = @http.post(ENDPOINT, :xml => query)
-      raise AvailabilityError.new unless response.code.to_s == "200"
-      xml = Nokogiri::XML(response.to_s)
+      raise AvailabilityError.new unless response.code == "200"
+      xml = Nokogiri::XML(response.body)
       check_for_response_errors(xml)
       xml
     end

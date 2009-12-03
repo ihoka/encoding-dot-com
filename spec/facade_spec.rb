@@ -9,11 +9,11 @@ describe "Encoding.com Facade" do
 
   def expect_xml_with_xpath(xpath)
     @http.should_receive(:post).with(EncodingDotCom::Facade::ENDPOINT,
-                                     EncodingXpathMatcher.new(xpath)).and_return(stub("Http Response", :code => 200))
+                                     EncodingXpathMatcher.new(xpath)).and_return(stub("Http Response", :code => "200", :body => ""))
   end
 
   def expect_response_xml(response_xml)
-    response = stub("Http Response", :code => 200, :to_s => response_xml)
+    response = stub("Http Response", :code => "200", :body => response_xml)
     @http.should_receive(:post).and_return(response)
   end
   
@@ -38,19 +38,19 @@ describe "Encoding.com Facade" do
 
   describe "request sent to encoding.com" do
     it "should return true if a success" do
-      @http.should_receive(:post).and_return(stub("Http Response", :code => 200))
+      @http.should_receive(:post).and_return(stub("Http Response", :code => "200", :body => ""))
       @facade.add_and_process(stub("source"), {}).should be_true
     end
 
     it "should raise an AvailabilityError if response status from encoding.com is not a 200" do
-      @http.should_receive(:post).and_return(stub("Http Response", :code => 503))
+      @http.should_receive(:post).and_return(stub("Http Response", :code => "503", :body => ""))
       lambda { @facade.add_and_process(stub("source"), {}) }.should raise_error(EncodingDotCom::AvailabilityError)
     end
 
     it "should raise an MessageError if response contains errors" do
       response = stub("Http Response",
-                      :code => 200,
-                      :to_s => "<?xml version=\"1.0\"?>\n<response><errors><error>Wrong query format</error></errors></response>\n")
+                      :code => "200",
+                      :body => "<?xml version=\"1.0\"?>\n<response><errors><error>Wrong query format</error></errors></response>\n")
       @http.should_receive(:post).and_return(response)
       lambda { @facade.add_and_process(stub("source"), {}) }.should raise_error(EncodingDotCom::MessageError)
     end
