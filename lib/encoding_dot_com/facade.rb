@@ -13,7 +13,7 @@ module EncodingDotCom
     #
     # +http+ should respond to post, and return an object responding to
     # +#code+ and +#to_s+
-    def initialize(user_id, user_key, http)
+    def initialize(user_id, user_key, http=HttpAdapters::CurbAdapter.new)
       @user_id, @user_key, @http = user_id, user_key, http
     end
 
