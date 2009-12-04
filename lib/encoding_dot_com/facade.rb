@@ -18,12 +18,26 @@ module EncodingDotCom
     end
 
     # Add a video/image to the encoding.com queue to be encoded in
-    # various formats.
+    # various formats. Item will be processed after being added.
     #
     # Source is the source url
     # formats is a hash of destination urls => format objects
     def add_and_process(source, formats={})
       response = make_request("AddMedia") do |q|      
+        q.source source
+        formats.each {|url, format| format.build_xml(q, url) }
+      end
+      media_id = response.xpath("/response/MediaID").text
+      media_id.to_i if media_id
+    end
+
+    # Add a video/image to the encoding.com queue to be encoded in
+    # various formats.
+    #
+    # Source is the source url
+    # formats is a hash of destination urls => format objects
+    def add(source, formats={})
+      response = make_request("AddMediaBenchmark") do |q|
         q.source source
         formats.each {|url, format| format.build_xml(q, url) }
       end

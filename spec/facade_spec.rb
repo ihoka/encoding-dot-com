@@ -207,6 +207,30 @@ describe "Encoding.com Facade" do
     end
   end
 
+  describe "adding an item to the encoding.com queue but not processing it" do
+    it "should have an action of 'AddMedia'." do
+      expect_xml_with_xpath("/query/action[text()='AddMediaBenchmark']")
+      @facade.add(stub("source"), {})
+    end
+
+    it "should include the source url" do
+      expect_xml_with_xpath("/query/source[text()='http://example.com/']")
+      @facade.add("http://example.com/", {})
+    end
+
+    it "should include the formats provided" do
+      expect_xml_with_xpath("/query/format/output[text()='flv']")
+      format = EncodingDotCom::Format.create("output" => "flv")
+      @facade.add(stub("source"), {stub("destination") => format})
+    end
+
+    it "should include the destination urls in the formats provided" do
+      expect_xml_with_xpath("/query/format/destination[text()='http://example.com']")
+      format = EncodingDotCom::Format.create("output" => "flv")
+      @facade.add(stub("source"), {"http://example.com" => format})
+    end
+  end
+
   describe "getting information about a specified media item" do
     it "should have an action of 'GetMediaInfo'." do
       expect_xml_with_xpath("/query/action[text()='GetMediaInfo']")
