@@ -1,5 +1,7 @@
 module EncodingDotCom
-  class FLVVP6Format < Format
+  # FLV Format that uses the VP6 codec - there are fewer attributes
+  # that can be set for VP6 compared to other video codecs.
+  class FLVVP6Format < Format #:nodoc:
     allowed_attributes :output, :video_codec, :size, :destination, :bitrate, :audio_bitrate, :audio_sample_rate, :audio_channels_number, :framerate
     
     def initialize(attributes={})

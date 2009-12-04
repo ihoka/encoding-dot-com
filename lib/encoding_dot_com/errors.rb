@@ -9,6 +9,7 @@ module EncodingDotCom
   class MessageError < StandardError
   end
 
+  # Error raised if a format's attribute has an illegal value
   class IllegalFormatAttribute < StandardError
   end
 end

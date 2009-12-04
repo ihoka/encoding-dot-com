@@ -1,7 +1,7 @@
 require 'parsedate'
 
 module EncodingDotCom
-  # Represents a video or image in the encoding.com queue
+  # Represents information about a video or image in the encoding.com queue
   class MediaInfo
     attr_reader :bitrate, :duration, :video_codec, :video_bitrate, :frame_rate, :size, :pixel_aspect_ratio, :display_aspect_ratio, :audio_codec, :audio_sample_rate, :audio_channels
 

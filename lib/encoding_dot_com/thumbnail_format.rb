@@ -1,7 +1,10 @@
 module EncodingDotCom
-  class ThumbnailFormat < Format
+  # A Thumbnail output format
+  class ThumbnailFormat < Format #:nodoc:
     allowed_attributes :output, :time, :width, :height
-        
+
+    # Creates a new ThumbnailFormat. You should be calling
+    # Format.create(attributes) rather than this constructor directly.
     def initialize(attributes={})
       @attributes = attributes.merge("output" => "thumbnail")
       validate_attributes

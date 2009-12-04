@@ -1,6 +1,12 @@
 module EncodingDotCom
+  # Base class for all formats sent to encoding.com
+  #
+  # You should create formats by calling +create+ with format attributes.
   class Format
     class << self
+      # Factory method that returns an appropriate Format. The
+      # +output+ attribute is required, others are optional (see the
+      # encoding.com documentation for full list of attributes).
       def create(attributes)
         if attributes["output"] == "thumbnail"
           ThumbnailFormat.new(attributes)
@@ -11,7 +17,7 @@ module EncodingDotCom
         end
       end
 
-      def allowed_attributes(*attrs)
+      def allowed_attributes(*attrs) #:nodoc:
         @allowed_attributes ||= []
         if attrs.empty?
           @allowed_attributes
@@ -20,7 +26,7 @@ module EncodingDotCom
         end
       end
       
-      def boolean_attributes(*attrs)
+      def boolean_attributes(*attrs) #:nodoc:
         @boolean_attributes ||= []
         if attrs.empty?
           @boolean_attributes  
@@ -30,7 +36,12 @@ module EncodingDotCom
         end
       end
     end
-    
+
+    # Builds the XML for this format.
+    #
+    # +builder+:: a Nokogiri builder, declared with a block
+    # +destination_url+:: where the encoded file should be placed. See
+    #the encoding.com documentation for details.
     def build_xml(builder, destination_url=nil)
       logo_attributes, other_attributes = self.class.allowed_attributes.partition {|a| a[0..3] == "logo" }
 
