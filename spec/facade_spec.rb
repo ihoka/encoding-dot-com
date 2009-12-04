@@ -183,6 +183,30 @@ describe "Encoding.com Facade" do
     end
   end
 
+  describe "updating formats of an item already in the encoding.com queue" do
+    it "should have an action of 'UpdateMedia'." do
+      expect_xml_with_xpath("/query/action[text()='UpdateMedia']")
+      @facade.update(5678, {})
+    end
+
+    it "should have a mediaid of 1234." do
+      expect_xml_with_xpath("/query/mediaid[text()='5678']")
+      @facade.update(5678, {})
+    end
+
+    it "should include the formats provided" do
+      expect_xml_with_xpath("/query/format/output[text()='flv']")
+      format = EncodingDotCom::Format.create("output" => "flv")
+      @facade.update(5678, {stub("destination") => format})
+    end
+
+    it "should include the destination urls in the formats provided" do
+      expect_xml_with_xpath("/query/format/destination[text()='http://example.com']")
+      format = EncodingDotCom::Format.create("output" => "flv")
+      @facade.update(5678, {"http://example.com" => format})
+    end
+  end
+
   describe "getting information about a specified media item" do
     it "should have an action of 'GetMediaInfo'." do
       expect_xml_with_xpath("/query/action[text()='GetMediaInfo']")

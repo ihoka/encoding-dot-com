@@ -68,6 +68,17 @@ module EncodingDotCom
       end
     end
     
+    # Replaces all the formats in an item on the encoding.com queue
+    # with the formats provided.
+    #
+    # formats is a hash of destination urls => Format objects
+    def update(media_id, formats={})
+      make_request("UpdateMedia") do |q|
+        q.mediaid media_id
+        formats.each {|url, format| format.build_xml(q, url) }        
+      end
+    end
+
     # Returns a MediaInfo object with some attributes of the video
     # identified by media_id.
     def info(media_id)
