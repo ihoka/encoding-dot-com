@@ -171,6 +171,18 @@ describe "Encoding.com Facade" do
     end
   end
 
+  describe "processing items already in the encoding" do
+    it "should have an action of 'CancelMedia'." do
+      expect_xml_with_xpath("/query/action[text()='ProcessMedia']")
+      @facade.process(5678)
+    end
+
+    it "should have a mediaid of 1234." do
+      expect_xml_with_xpath("/query/mediaid[text()='5678']")
+      @facade.process(5678)
+    end
+  end
+
   describe "getting information about a specified media item" do
     it "should have an action of 'GetMediaInfo'." do
       expect_xml_with_xpath("/query/action[text()='GetMediaInfo']")

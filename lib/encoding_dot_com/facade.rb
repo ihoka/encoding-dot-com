@@ -61,6 +61,13 @@ module EncodingDotCom
       end
     end
 
+    # Process an item already in the encoding.com queue
+    def process(media_id)
+      make_request("ProcessMedia") do |q|
+        q.mediaid media_id
+      end
+    end
+    
     # Returns a MediaInfo object with some attributes of the video
     # identified by media_id.
     def info(media_id)
