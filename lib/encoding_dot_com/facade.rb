@@ -11,7 +11,9 @@ module EncodingDotCom
     # Creates a new facacde given an encoding.com user id & key, and
     # an HTTP library implementation.
     #
-    # +http+ should respond to post, and return an object responding to
+    # +user_id+:: your encoding.com user id
+    # +user_key+:: your encoding.com secret key
+    # +http+:: should respond to post, and return an object responding to
     # +#code+ and +#to_s+
     def initialize(user_id, user_key, http=HttpAdapters::CurbAdapter.new)
       @user_id, @user_key, @http = user_id, user_key, http
@@ -20,38 +22,26 @@ module EncodingDotCom
     # Add a video/image to the encoding.com queue to be encoded in
     # various formats. Item will be processed after being added.
     #
-    # Source is the source url
-    # formats is a hash of destination urls => format objects
+    # +source+:: the source url
+    # +formats+:: a hash of destination urls => format objects
     def add_and_process(source, formats={})
-      response = make_request("AddMedia") do |q|      
-        q.source source
-        formats.each {|url, format| format.build_xml(q, url) }
-      end
-      media_id = response.xpath("/response/MediaID").text
-      media_id.to_i if media_id
+      add_request("AddMedia", source, formats)
     end
 
     # Add a video/image to the encoding.com queue to be encoded in
     # various formats.
     #
-    # Source is the source url
-    # formats is a hash of destination urls => format objects
+    # +source+:: the source url
+    # +formats+:: a hash of destination urls => format objects
     def add(source, formats={})
-      response = make_request("AddMediaBenchmark") do |q|
-        q.source source
-        formats.each {|url, format| format.build_xml(q, url) }
-      end
-      media_id = response.xpath("/response/MediaID").text
-      media_id.to_i if media_id
+      add_request("AddMediaBenchmark", source, formats)
     end
 
     # Returns the status string of a particular media item in the
     # encoding.com queue. The status will be for the job as a whole,
     # rather than individual ouput formats
     def status(media_id)
-      response = make_request("GetStatus") do |q|
-        q.mediaid media_id
-      end
+      response = make_request("GetStatus") {|q| q.mediaid media_id }
       response.xpath("/response/status").text
     end
 
@@ -70,22 +60,20 @@ module EncodingDotCom
 
     # Cancels a media item in the encoding.com queue
     def cancel(media_id)
-      make_request("CancelMedia") do |q|
-        q.mediaid media_id
-      end
+      make_request("CancelMedia") {|q| q.mediaid media_id }
     end
 
     # Process an item already in the encoding.com queue
     def process(media_id)
-      make_request("ProcessMedia") do |q|
-        q.mediaid media_id
-      end
+      make_request("ProcessMedia") {|q| q.mediaid media_id }
     end
     
     # Replaces all the formats in an item on the encoding.com queue
-    # with the formats provided.
+    # with the formats provided. This also kicks off the encoding
+    # process - there is no need to call process after this.
     #
-    # formats is a hash of destination urls => Format objects
+    # +media_id+:: id of the item in the encoding.com queue
+    # +formats+:: a hash of destination urls => Format objects
     def update(media_id, formats={})
       make_request("UpdateMedia") do |q|
         q.mediaid media_id
@@ -96,14 +84,21 @@ module EncodingDotCom
     # Returns a MediaInfo object with some attributes of the video
     # identified by media_id.
     def info(media_id)
-      response = make_request("GetMediaInfo") do |q|
-        q.mediaid media_id
-      end
+      response = make_request("GetMediaInfo") {|q| q.mediaid media_id }
       MediaInfo.new(response)
     end
 
     private
 
+    def add_request(action, source, formats)
+      response = make_request(action) do |q|
+        q.source source
+        formats.each {|url, format| format.build_xml(q, url) }
+      end
+      media_id = response.xpath("/response/MediaID").text
+      media_id.to_i if media_id
+    end
+    
     def make_request(action_name, &block)
       query = build_query(action_name, &block)
       response = @http.post(ENDPOINT, :xml => query)
