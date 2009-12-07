@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Encoding.com Facade" do
+describe "Encoding.com Queue facade" do
 
   before :each do
     @http = mock("Http Interface")
-    @facade = EncodingDotCom::Facade.new(1234, "abcd", @http)
+    @facade = EncodingDotCom::Queue.new(1234, "abcd", @http)
   end
 
   def expect_xml_with_xpath(xpath)
-    @http.should_receive(:post).with(EncodingDotCom::Facade::ENDPOINT,
+    @http.should_receive(:post).with(EncodingDotCom::Queue::ENDPOINT,
                                      EncodingXpathMatcher.new(xpath)).and_return(stub("Http Response", :code => "200", :body => ""))
   end
 

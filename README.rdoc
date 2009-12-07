@@ -1,6 +1,37 @@
 = encoding-dot-com
 
-Description goes here.
+A client library for the encoding.com API.
+
+Supports all the actions of the encoding.com API. Example usage:
+
+    require "encoding_dot_com"
+    
+    # Create an interface to the encoding.com queue with your user id and secret
+    queue = EncodingDotCom::Queue.new(1234, "secret")
+    
+    # Create one or more output formats
+    format = EncodingDotCom::Format.create("output" => "flv")
+    
+    # Get an media item processed. You can pass multiple output formats in a hash.
+    media_id = queue.add_and_process("http://source/url/here", "http://destination/url/here" => format)
+    
+    queue.status(media_id) # => returns a string like "Waiting for encoder" or "Finished"
+    queue.info(media_id)   # => returns information about an item in the queue
+
+See the API documentation for more details.
+
+By default the library uses Curb for http - there is also a Net/HTTP 
+adapter and it is easy to write your own.
+
+== Dependencies
+
+* Nokogiri
+* (Optionally) curb
+
+== TODOs
+
+* Flesh out validations to ensure that bad data does not get submitted to
+  encoding.com
 
 == Note on Patches/Pull Requests
  
@@ -12,6 +43,12 @@ Description goes here.
   (if you want to have your own version, that is fine but
    bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
+
+== Authors
+
+* Roland Swingler
+* Alan Kennedy
+* Levent Ali
 
 == Copyright
 

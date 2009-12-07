@@ -5,7 +5,6 @@ require 'encoding-dot-com'
 require 'spec'
 require 'spec/autorun'
 require 'nokogiri'
-require 'encoding_dot_com/facade'
 
 class EncodingXpathMatcher
   def initialize(xpath)

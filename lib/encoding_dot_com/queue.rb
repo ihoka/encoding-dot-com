@@ -4,7 +4,7 @@ module EncodingDotCom
   # A remote facade to the encoding.com API.
   #
   # The facade is stateless and can be reused for multiple requests.
-  class Facade
+  class Queue
     # Where encoding.com expects messages to be posted to.
     ENDPOINT = "http://manage.encoding.com/"
 
