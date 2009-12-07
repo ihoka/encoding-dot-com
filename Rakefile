@@ -8,11 +8,10 @@ begin
     gem.summary = %Q{A ruby wrapper for the encoding.com API}
     gem.description = %Q{A ruby wrapper for the encoding.com API}
     gem.email = "roland.swingler@gmail.com"
-    gem.homepage = "http://github.com/knaveofdiamonds/encoding-dot-com"
-    gem.authors = ["Roland Swingler"]
+    gem.homepage = "http://encodingdotcom.rubyforge.org/"
+    gem.authors = ["Roland Swingler", "Alan Kennedy", "Levent Ali"]
     gem.add_dependency "nokogiri"
     gem.add_development_dependency "rspec"
-    gem.add_development_dependency "yard"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError

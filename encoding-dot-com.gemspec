@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Roland Swingler"]
+  s.authors = ["Roland Swingler", "Alan Kennedy", "Levent Ali"]
   s.date = %q{2009-12-07}
   s.description = %q{A ruby wrapper for the encoding.com API}
   s.email = %q{roland.swingler@gmail.com}
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "encoding-dot-com.gemspec",
      "lib/encoding-dot-com.rb",
      "lib/encoding_dot_com.rb",
      "lib/encoding_dot_com/attribute_restrictions.rb",
@@ -45,7 +46,7 @@ Gem::Specification.new do |s|
      "spec/spec_helper.rb",
      "spec/thumbnail_format_spec.rb"
   ]
-  s.homepage = %q{http://github.com/knaveofdiamonds/encoding-dot-com}
+  s.homepage = %q{http://encodingdotcom.rubyforge.org/}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
@@ -68,15 +69,12 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
-      s.add_development_dependency(%q<yard>, [">= 0"])
     else
       s.add_dependency(%q<nokogiri>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
-      s.add_dependency(%q<yard>, [">= 0"])
     end
   else
     s.add_dependency(%q<nokogiri>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
-    s.add_dependency(%q<yard>, [">= 0"])
   end
 end
