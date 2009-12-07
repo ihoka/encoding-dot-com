@@ -4,7 +4,7 @@ module EncodingDotCom
   class AvailabilityError < StandardError
   end
 
-  # Error raiseed if there is an problem with the message sent to
+  # Error raised if there is an problem with the message sent to
   # encoding.com API.
   class MessageError < StandardError
   end

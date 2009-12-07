@@ -41,7 +41,7 @@ module EncodingDotCom
     #
     # +builder+:: a Nokogiri builder, declared with a block
     # +destination_url+:: where the encoded file should be placed. See
-    #the encoding.com documentation for details.
+    #                     the encoding.com documentation for details.
     def build_xml(builder, destination_url=nil)
       logo_attributes, other_attributes = self.class.allowed_attributes.partition {|a| a[0..3] == "logo" }
 

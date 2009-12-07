@@ -1,6 +1,6 @@
 = encoding-dot-com
 
-A client library for the encoding.com API.
+A client library for the encoding.com[http://www.encoding.com] API.
 
 Supports all the actions of the encoding.com API. Example usage:
 
@@ -18,7 +18,7 @@ Supports all the actions of the encoding.com API. Example usage:
     queue.status(media_id) # => returns a string like "Waiting for encoder" or "Finished"
     queue.info(media_id)   # => returns information about an item in the queue
 
-See the API documentation for more details.
+See the API documentation for more details - Queue is a good starting place. 
 
 By default the library uses Curb for http - there is also a Net/HTTP 
 adapter and it is easy to write your own.
@@ -42,14 +42,14 @@ adapter and it is easy to write your own.
   future version unintentionally.
 * Commit, do not mess with rakefile, version, or history.
   (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
+  bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
 == Authors
 
-* Roland Swingler
-* Alan Kennedy
-* Levent Ali
+* {Roland Swingler}[http://github.com/knaveofdiamonds]
+* {Alan Kennedy}[http://github.com/alan]
+* {Levent Ali}[http://github.com/levent]
 
 == Copyright
 

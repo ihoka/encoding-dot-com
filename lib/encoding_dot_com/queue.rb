@@ -1,9 +1,9 @@
 require 'nokogiri'
 
 module EncodingDotCom
-  # A remote facade to the encoding.com API.
+  # A remote facade to the encoding.com queue.
   #
-  # The facade is stateless and can be reused for multiple requests.
+  # The queue is stateless and can be reused for multiple requests.
   class Queue
     # Where encoding.com expects messages to be posted to.
     ENDPOINT = "http://manage.encoding.com/"
@@ -14,7 +14,7 @@ module EncodingDotCom
     # +user_id+:: your encoding.com user id
     # +user_key+:: your encoding.com secret key
     # +http+:: should respond to post, and return an object responding to
-    # +#code+ and +#to_s+
+    #          +#code+ and +#to_s+
     def initialize(user_id, user_key, http=HttpAdapters::CurbAdapter.new)
       @user_id, @user_key, @http = user_id, user_key, http
     end
@@ -47,7 +47,7 @@ module EncodingDotCom
 
     # Returns the full status of an entry in the encoding.com queue,
     # including details about the status of individual formats
-    def full_status(media_id)
+    def full_status(media_id) #:nodoc:
       response = make_request("GetStatus") do |q|
         q.mediaid media_id
       end

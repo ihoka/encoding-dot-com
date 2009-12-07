@@ -4,7 +4,7 @@ module EncodingDotCom
     Response = Struct.new(:code, :body)
 
     # Wraps the curb[http://curb.rubyforge.org/] library for use with
-    # the Facade.
+    # the Queue.
     class CurbAdapter
       def initialize
         require 'curb'

@@ -1,7 +1,7 @@
 module EncodingDotCom
   module HttpAdapters
 
-    # Wraps the Net/HTTP library for use with the Facade.
+    # Wraps the Net/HTTP library for use with the Queue.
     class NetHttpAdapter
       def initialize
         require 'net/http'
