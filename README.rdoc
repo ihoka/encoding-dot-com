@@ -32,6 +32,7 @@ adapter and it is easy to write your own.
 
 * Flesh out validations to ensure that bad data does not get submitted to
   encoding.com
+* Full status method
 
 == Note on Patches/Pull Requests
  
