@@ -58,7 +58,7 @@ rescue LoadError
   end
 end
 
-task :default => :spec
+task :default => [:spec, :roodi]
 
 begin
   require 'yard'
