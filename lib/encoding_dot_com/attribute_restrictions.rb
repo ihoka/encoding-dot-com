@@ -18,8 +18,8 @@ module EncodingDotCom
   end
 
   module AttributeRestrictionsFlv #:nodoc:
-    validate_inclusion_of :audio_bitrate, %w{32k 40k 48k 56k 64k 80k 96k 112k 128k 144k 160k 192k 224k 256k 320k}
-    validate_inclusion_of :video_codec, %w{flv libx264 vp6}
+#    validate_inclusion_of :audio_bitrate, %w{32k 40k 48k 56k 64k 80k 96k 112k 128k 144k 160k 192k 224k 256k 320k}
+#    validate_inclusion_of :video_codec, %w{flv libx264 vp6}
     
     def validate_audio_bitrate
       allowed_bitrates = %w{32k 40k 48k 56k 64k 80k 96k 112k 128k 144k 160k 192k 224k 256k 320k}
