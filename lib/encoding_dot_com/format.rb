@@ -48,21 +48,26 @@ module EncodingDotCom
       builder.format {
         builder.destination destination_url
         other_attributes.each do |attr|
-          unless @attributes[attr].nil?
-            if self.class.boolean_attributes.include?(attr)
-              val = (@attributes[attr] ? "yes" : "no")
-            else
-              val = @attributes[attr]
-            end
-            builder.send(attr, val)
-          end
+          builder.send(attr, output_value(attr)) unless @attributes[attr].nil?
         end
         if logo_attributes.any? {|attr| @attributes[attr] }
           builder.logo {
-            logo_attributes.each {|attr| builder.send(attr, @attributes[attr]) if @attributes[attr] }
+            logo_attributes.each {|attr| builder.send(attr, output_value(attr)) if @attributes[attr] }
           }
         end
       }
+    end
+
+    private
+
+    # Returns a value suitable for the format XML - i.e. translates
+    # booleans to yes/no.
+    def output_value(key)
+      if self.class.boolean_attributes.include?(key)
+        (@attributes[key] ? "yes" : "no")
+      else
+        @attributes[key]
+      end
     end
   end
 end
