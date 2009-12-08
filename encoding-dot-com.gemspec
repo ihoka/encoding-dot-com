@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{encoding-dot-com}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Roland Swingler", "Alan Kennedy", "Levent Ali"]
-  s.date = %q{2009-12-07}
+  s.date = %q{2009-12-08}
   s.description = %q{A ruby wrapper for the encoding.com API}
   s.email = %q{roland.swingler@gmail.com}
   s.extra_rdoc_files = [
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
      "lib/encoding_dot_com/format.rb",
      "lib/encoding_dot_com/http_adapters/curb_adapter.rb",
      "lib/encoding_dot_com/http_adapters/net_http_adapter.rb",
+     "lib/encoding_dot_com/image_format.rb",
      "lib/encoding_dot_com/media_info.rb",
      "lib/encoding_dot_com/media_list_item.rb",
      "lib/encoding_dot_com/queue.rb",
@@ -41,6 +42,7 @@ Gem::Specification.new do |s|
      "spec/encoding_dot_com/http_adapters/net_http_adapter_spec.rb",
      "spec/flv_vp6_format_spec.rb",
      "spec/format_spec.rb",
+     "spec/image_format_spec.rb",
      "spec/media_list_item_spec.rb",
      "spec/queue_spec.rb",
      "spec/spec_helper.rb",
@@ -54,6 +56,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/flv_vp6_format_spec.rb",
      "spec/spec_helper.rb",
+     "spec/image_format_spec.rb",
      "spec/encoding_dot_com/http_adapters/net_http_adapter_spec.rb",
      "spec/encoding_dot_com/http_adapters/curb_adapter_spec.rb",
      "spec/format_spec.rb",
