@@ -3,8 +3,12 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "Encoding.com video format" do
 
   describe "#create" do
-    it "should return a video format" do
+    it "should return a VideoFormat when the output type is a video output" do
       EncodingDotCom::Format.create("output" => "mp4").should be_instance_of(EncodingDotCom::VideoFormat)
+    end
+
+    it "should return a ImageFormat when the output type is image" do
+      EncodingDotCom::Format.create("output" => "image").should be_instance_of(EncodingDotCom::ImageFormat)
     end
   end
   
