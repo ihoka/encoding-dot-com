@@ -30,7 +30,7 @@ describe "Encoding.com Image Format" do
     format_xml("keep_aspect_ratio" => true).should have_xpath("/format/keep_aspect_ratio[text()='yes']")
   end
 
-  describe "valid resize methods" do
+  describe "valid attributes" do
     %w{resize crop combine}.each do |method|
       it "should allow '#{method}' as a resize_method" do
         lambda { format_xml("resize_method" => method) }.should_not raise_error(EncodingDotCom::IllegalFormatAttribute)
@@ -39,6 +39,16 @@ describe "Encoding.com Image Format" do
 
     it "should not allow anything else as a resize_method" do
       lambda { format_xml("resize_method" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+    end
+
+    %w{jpg png gif}.each do |format|
+      it "should allow '#{format}' as an image_format" do
+        lambda { format_xml("image_format" => format) }.should_not raise_error(EncodingDotCom::IllegalFormatAttribute)
+      end
+    end
+
+    it "should not allow anything else as an image_format" do
+      lambda { format_xml("image_format" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
     end
   end
   
