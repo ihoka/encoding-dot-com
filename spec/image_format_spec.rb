@@ -30,25 +30,36 @@ describe "Encoding.com Image Format" do
     format_xml("keep_aspect_ratio" => true).should have_xpath("/format/keep_aspect_ratio[text()='yes']")
   end
 
-  describe "valid attributes" do
+  describe "valid resize method" do
     %w{resize crop combine}.each do |method|
-      it "should allow '#{method}' as a resize_method" do
+      it "should allow '#{method}'" do
         lambda { format_xml("resize_method" => method) }.should_not raise_error(EncodingDotCom::IllegalFormatAttribute)
       end
     end
 
-    it "should not allow anything else as a resize_method" do
+    it "should not allow anything else" do
       lambda { format_xml("resize_method" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
     end
+  end
 
+  describe "valid image format" do
     %w{jpg png gif}.each do |format|
-      it "should allow '#{format}' as an image_format" do
+      it "should allow '#{format}'" do
         lambda { format_xml("image_format" => format) }.should_not raise_error(EncodingDotCom::IllegalFormatAttribute)
       end
     end
 
-    it "should not allow anything else as an image_format" do
+    it "should not allow anything else" do
       lambda { format_xml("image_format" => "foo") }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+    end
+  end
+
+  describe "valid quality" do
+    it "should be between 1 and 100" do
+      lambda { format_xml("quality" => 0) }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+      lambda { format_xml("quality" => 101) }.should raise_error(EncodingDotCom::IllegalFormatAttribute)
+      lambda { format_xml("quality" => 1) }.should_not raise_error(EncodingDotCom::IllegalFormatAttribute)      
+      lambda { format_xml("quality" => 100) }.should_not raise_error(EncodingDotCom::IllegalFormatAttribute)      
     end
   end
   

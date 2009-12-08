@@ -13,6 +13,7 @@ module EncodingDotCom
     def validate_attributes
       validate_image_format
       validate_resize_method
+      validate_quality
     end
 
     def validate_image_format
@@ -26,6 +27,11 @@ module EncodingDotCom
         raise IllegalFormatAttribute.new("resize_method should be one of resize, crop or combine.")
       end
     end
-    
+
+    def validate_quality
+      unless quality.nil? || (quality.to_i >= 1 && quality.to_i <= 100)
+        raise IllegalFormatAttribute.new("quality should be between 1 and 100.")
+      end
+    end
   end
 end
