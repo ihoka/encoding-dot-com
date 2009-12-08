@@ -7,6 +7,10 @@ describe "Encoding.com video format" do
       EncodingDotCom::Format.create("output" => "mp4").should be_instance_of(EncodingDotCom::VideoFormat)
     end
 
+    it "should return a FLVVP6Format if the output is flv and the video codec is vp6" do
+      EncodingDotCom::Format.create("output" => "flv", "video_codec" => "vp6").should be_instance_of(EncodingDotCom::FLVVP6Format)
+    end
+
     it "should return a ImageFormat when the output type is image" do
       EncodingDotCom::Format.create("output" => "image").should be_instance_of(EncodingDotCom::ImageFormat)
     end
