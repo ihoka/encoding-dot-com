@@ -1,10 +1,10 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'rubygems'
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'vendor', 'gems', 'environment'))
+Bundler.require_env
+
 require 'encoding-dot-com'
-require 'spec'
-require 'spec/autorun'
-require 'nokogiri'
 
 class EncodingXpathMatcher
   def initialize(xpath)
