@@ -24,8 +24,8 @@ module EncodingDotCom
     #
     # +source+:: the source url
     # +formats+:: a hash of destination urls => format objects
-    def add_and_process(source, formats={})
-      add_request("AddMedia", source, formats)
+    def add_and_process(source, formats={}, notify_url=nil)
+      add_request("AddMedia", source, formats, notify_url)
     end
 
     # Add a video/image to the encoding.com queue to be encoded in
@@ -74,9 +74,10 @@ module EncodingDotCom
     #
     # +media_id+:: id of the item in the encoding.com queue
     # +formats+:: a hash of destination urls => Format objects
-    def update(media_id, formats={})
+    def update(media_id, formats={}, notify_url=nil)
       make_request("UpdateMedia") do |q|
         q.mediaid media_id
+        q.notify notify_url unless notify_url.nil?
         formats.each {|url, format| format.build_xml(q, url) }        
       end
     end
@@ -90,9 +91,10 @@ module EncodingDotCom
 
     private
 
-    def add_request(action, source, formats)
+    def add_request(action, source, formats, notify_url=nil)
       response = make_request(action) do |q|
         q.source source
+        q.notify notify_url unless notify_url.nil?
         formats.each {|url, format| format.build_xml(q, url) }
       end
       media_id = response.xpath("/response/MediaID").text
