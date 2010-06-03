@@ -8,6 +8,7 @@ require 'encoding_dot_com/image_format'
 require 'encoding_dot_com/flv_vp6_format'
 require 'encoding_dot_com/media_list_item'
 require 'encoding_dot_com/media_info'
+require 'encoding_dot_com/encoding_result'
 require 'encoding_dot_com/http_adapters/curb_adapter'
 require 'encoding_dot_com/http_adapters/net_http_adapter'
 
